@@ -69,7 +69,7 @@ public class CharacterGrouping {
 
     private void findTheFirstNonRepeatingCharApproach4(String inputStr){
         LinkedHashMap<String, Long> linkedHashMap = Arrays.stream(inputStr.split(""))
-                .collect(Collectors.groupingBy(x-> x, LinkedHashMap::new, Collectors.counting()));
+                .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
 
         String ch = linkedHashMap
                 .entrySet()
