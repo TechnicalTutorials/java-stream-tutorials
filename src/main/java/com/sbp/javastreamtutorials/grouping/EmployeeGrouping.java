@@ -3,39 +3,20 @@ package com.sbp.javastreamtutorials.grouping;
 import com.sbp.javastreamtutorials.models.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.*;
-
 import static java.util.stream.Collectors.*;
 
-public class GroupingByDriver {
-    private static final Logger Log = LoggerFactory.getLogger(GroupingByDriver.class);
+public class EmployeeGrouping {
 
-    private static List<Employee> employees = null;
-    public static void main(String[] args) {
-        Log.info("TechnicalTutorials: GroupingByDriver");
+    private final Logger Log = LoggerFactory.getLogger(GroupingDriver.class);
+    private List<Employee> employees = null;
 
-        //Create List of Employee
+    public EmployeeGrouping(){
         createEmployees();
-
-        // 1) Do the groupingBy department
-        // 2) In each department find the nth highest salary employee
-        NthHighestSalaryInDepartment();
-
-        // 1) Do the groupingBy department
-        // 2) In each department find the nth highest salary employee particular attribute
-        // 3) Get the name of that employee
-        NthHighestSalaryEmpName();
-
-        // 1) Do the groupingBy department
-        // 2) In each department find the nth highest salary employee particular attribute
-        // 3) Get the name and Salary of that employee
-        NthHighestSalaryEmpNameAndSal();
-
     }
 
-    private static void createEmployees(){
-        employees = Arrays.asList(
+    private void createEmployees(){
+        this.employees = Arrays.asList(
                 new Employee(1, 1, "emp1", 3000000.00f),
                 new Employee(1, 2, "emp2", 4100000.00f),
                 new Employee(1, 3, "emp3", 5100000.00f),
@@ -58,37 +39,42 @@ public class GroupingByDriver {
     }
 
     /*
-    Find the Nth highest salary employee in each Department
-    N=2;
+    1) Problem statement: Find the Nth highest salary employee in each Department.
+    2) Do the groupingBy department
+    3) In each department find the nth highest salary employee
+    4) Example: N=2;
      */
-    private static void NthHighestSalaryInDepartment(){
+    public void NthHighestSalaryInDepartment(){
 
         Map<Integer, Optional<Employee>> nthHighestSalaryEmployee = employees.stream()
                 .collect(groupingBy(
                         Employee::getDepartmentId,
                         collectingAndThen(toList(),
                                 list -> list.stream()
-                                                .sorted(Comparator.comparing(Employee::getSalary).reversed()).skip(1).findFirst()
+                                        .sorted(Comparator.comparing(Employee::getSalary).reversed()).skip(1).findFirst()
 
-                )));
+                        )));
 
         Log.info("1. 2nd highest salary employee in each department: "+ nthHighestSalaryEmployee);
     }
 
     /*
-   Find the Nth highest salary employee name and salary in each Department
-   N=2;
+    1) Problem statement: Find the Nth highest salary employee name and salary in each Department.
+    2) Do the groupingBy department
+    3) In each department find the nth highest salary employee particular attribute
+    4) Get the name of that employee
+    5)  Example: N=2;
     */
-    private static void NthHighestSalaryEmpName(){
+    public void NthHighestSalaryEmpName(){
 
         Map<Integer, String> nthHighestSalaryEmployee = employees.stream()
                 .collect(groupingBy(
                         Employee::getDepartmentId,
                         collectingAndThen(toList(),
                                 list -> {
-                            Optional<Employee> emp = list.stream()
+                                    Optional<Employee> emp = list.stream()
                                             .sorted(Comparator.comparing(Employee::getSalary).reversed()).skip(1).findFirst();
-                                return emp.isEmpty()? "No such employee" : emp.get().getName();
+                                    return emp.isEmpty()? "No such employee" : emp.get().getName();
                                 }
                         )));
 
@@ -96,10 +82,13 @@ public class GroupingByDriver {
     }
 
     /*
-   Find the Nth highest salary employee name and salary in each Department
-   N=2;
+    1) Problem statement: Find the Nth highest salary employee name and salary in each Department.
+    2) Do the groupingBy department
+    3) In each department find the nth highest salary employee particular attribute
+    4) Get the name and Salary of that employee
+    5)  Example: N=2;
     */
-    private static void NthHighestSalaryEmpNameAndSal(){
+    public void NthHighestSalaryEmpNameAndSal(){
 
         Map<Integer, String> nthHighestSalaryEmployee = employees.stream()
                 .collect(groupingBy(
